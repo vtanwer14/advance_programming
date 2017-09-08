@@ -5,6 +5,8 @@ package ap_lab6;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 class coordinate{
@@ -93,7 +95,7 @@ public class game {
 		coordinate queen=new coordinate(qx,qy);
 		s.close();
 		ArrayList<knight> list=new ArrayList<knight>();
-		for(int i=1;i<=3;i++){
+		for(int i=1;i<=nk;i++){
 			File f=new File("./src/ap_lab6/"+i+".txt");
 			Scanner in=new Scanner(f);
 			String name=in.nextLine();
@@ -129,11 +131,17 @@ public class game {
 		boolean flag=false;
 		int iterate=1;
 		
+
+		PrintStream out=new PrintStream(new FileOutputStream("./src/ap_lab6/output.txt"));
+		System.setOut(out);
+		
+		
 		while(list.size()>0 && iterations>=iterate && !flag){
 			for(int i=0;i<list.size();i++){
 				try{
 					System.out.println(iterate+" "+list.get(i).name+" "+list.get(i).c.x+" "+list.get(i).c.y);
 					if(list.get(i).box.size()==0){
+						list.remove(i);
 						throw new StackEmptyException("StackEmptyException: Stack Empty exception");
 					}
 					else if(list.get(i).box.peek() instanceof Integer){
