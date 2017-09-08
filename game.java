@@ -36,7 +36,8 @@ class knight implements Comparable<knight>{
 		return this.name;
 	}
 	public void updatepos(coordinate pos){
-		c=pos;
+		c.x=pos.x;
+		c.y=pos.y;
 	}
 	
 	@Override 
@@ -126,10 +127,12 @@ public class game {
 		}*/
 		
 		boolean flag=false;
+		int iterate=1;
 		
-		while(list.size()>0 && iterations-->0 && !flag){
+		while(list.size()>0 && iterations>=iterate && !flag){
 			for(int i=0;i<list.size();i++){
 				try{
+					System.out.println(iterate+" "+list.get(i).name+" "+list.get(i).c.x+" "+list.get(i).c.y);
 					if(list.get(i).box.size()==0){
 						throw new StackEmptyException("StackEmptyException: Stack Empty exception");
 					}
@@ -150,15 +153,15 @@ public class game {
 						}
 						else if(temp.overlap(list,i)!=-1){
 							String n=list.get(temp.overlap(list,i)).name;
-							list.remove(temp.overlap(list,i));
+							knight del=list.remove(temp.overlap(list,i));
+							list.get(i).updatepos(del.c);
 							throw new OverlapException("OverlapException: Knights Overlap Exception "+n);
 						}
 						else{
 							list.get(i).updatepos(temp);
-							throw new NoException("NoException: No exception "+temp.x+" "+temp.y);
+							throw new NoException("No exception "+temp.x+" "+temp.y);
 						}
 					}
-					
 				}
 				catch (StackEmptyException e){
 					System.out.println(e.getMessage());
@@ -183,7 +186,7 @@ public class game {
 				}
 				
 			}
-			
+			iterate++;
 		}
 		
 	}
